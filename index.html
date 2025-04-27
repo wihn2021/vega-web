@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="VEGA: Automatically Generating Compiler Backends using a Pre-trained Transformer Model">
+  <meta name="keywords" content="AI-Generated Compilers, Compiler Backends, Source code generation, Retargetable compilers">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VEGA: Automatically Generating Compiler Backends using a Pre-trained Transformer Model</title>
+
+  <!-- highlight code -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Add bash support -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
+<style>
+.hljs-comment {
+    color: #16cc50;
+}
+</style>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- Consider adding a VEGA-specific icon if available -->
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">VEGA: Automatically Generating Compiler Backends using a Pre-trained Transformer Model
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a>Ming Zhong</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                <a>Fang Lv</a><sup>1*</sup>,</span>
+              <span class="author-block">
+                <a>Lulin Wang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a>Lei Qiu</a><sup>1,2</sup>,
+              </span>
+              <span class="author-block">
+                <a>Yingying Wang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a>Ying Liu</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a>Huimin Cui</a><sup>1,2*</sup>,
+              </span>
+              <span class="author-block">
+                <a>Xiaobing Feng</a><sup>1,2</sup>,
+              </span>
+              <span class="author-block">
+                <a>Jingling Xue</a><sup>3</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>SKL of Processors, Institute of Computing Technology, CAS</span><br>
+              <span class="author-block"><sup>2</sup>University of Chinese Academy of Sciences</span><br>
+              <span class="author-block"><sup>3</sup>UNSW Sydney, Australia</span><br>
+              <span class="author-block"><sup>*</sup>Corresponding Author</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                 <!-- CGO Link -->
+                 <span class="link-block">
+                   <a href="https://doi.org/10.1145/3696443.3708931" class="external-link button is-normal is-rounded is-dark">
+                     <span class="icon">
+                       <i class="ai ai-acm"></i>
+                     </span>
+                     <span>CGO '25</span> <!-- Update year if necessary -->
+                   </a>
+                 </span>
+                <!-- Code / Data Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/docz1105/VEGA_AE" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i> <!-- Using GitHub icon for repo link -->
+                    </span>
+                    <span>Code & Data</span>
+                  </a>
+                </span>
+                <!-- Download Link-->
+
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Overview</h2>
+          <div class="content has-text-justified">
+            <p>
+We introduce VEGA, an AI-driven system aimed at easing
+ the development of compiler backends for new targets. Our
+ approach involves categorizing functions from existing backends into function groups, each comprising various target
+specific implementations of a standard compiler interface
+ function, abstracted as a single function template. There
+fore, generating a new backend involves customizing these
+ function templates to specific target requirements. To capitalize on AI’s capabilities in code generation, VEGA maps
+ statements in a target-specific version of a function template into feature vectors, distinguishing between target
+independent and target-specific properties. Leveraging a pre-trained model, VEGA can efficiently auto-generate a version
+ of each function template tailored to a specific target, thereby
+ enabling the construction of a complete compiler backend
+ for a new target based solely on its target description files.
+            </p><p>
+We evaluated VEGA on three distinct targets: a CPU processor (RISC-V), a customized processor with instruction
+ extensions (RI5CY), and an IoT processor (xCORE). VEGA
+ demonstrated high efficiency, generating compiler backends
+ under an hour, which can substantially enhance developer
+ productivity. Across the three targets, VEGA achieved accuracy rates of 71.5%, 73.2%, and 62.2% for all generated
+functions, significantly outperforming the traditional forkflow method, 
+which yielded less than 8% accuracy. Moreover,
+ VEGA provides explicit confidence scores for generated functions and statements, allowing developers to easily identify
+ areas requiring minimal manual intervention. This research
+ has the potential to improve the effectiveness of traditional
+ compiler backend development.
+            </p>
+            <img src="./static/images/archofvega.jpg" alt="The Architecture of VEGA">
+            <p>
+              VEGA is an automated system that uses a pre-trained transformer model to generate compiler backends, identifying target-specific and target-independent features to produce code for new architectures efficiently, requiring only their description files as input.
+            </p>
+          </div>
+
+        </div>
+      </div>
+      <!--/ Abstract. -->
+      <!-- Overview. -->
+
+      <!--/ Overview. -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content">
+            <h2 class="title is-3"> Main Results </h2>
+            <p>
+              VEGA demonstrates significant improvements in compiler backend generation efficiency and accuracy. It can generate complete backends for new targets like RISC-V, RI5CY, and xCORE in under an hour. Evaluation using pass@1 on LLVM regression tests shows average function-level accuracy rates of 71.5% (RISC-V), 73.2% (RI5CY), and 62.2% (xCORE). This vastly outperforms the traditional fork-flow approach, which achieved less than 8% accuracy for these targets. VEGA also provides confidence scores, aiding developers in identifying potentially incorrect code sections, further enhancing productivity.
+            </p>
+             <!-- Placeholder for VEGA Figure 8: Accuracy -->
+            <img src="./static/images/vega_accuracy_result.jpg" alt="VEGA Accuracy Results">
+            <p>
+             Compared to the manual effort required by the traditional fork-flow method, VEGA drastically reduces the need for modifications. While fork-flow required over 85% of statements to be manually changed, VEGA achieves high statement-level accuracy (e.g., 55.0% for RISC-V, 58.5% for RI5CY) automatically, minimizing manual intervention.
+            </p>
+             <!-- Placeholder for VEGA Figure 9: Comparison -->
+             <img src="./static/images/compare.jpg" alt="VEGA vs ForkFlow Comparison">
+          </div>
+        </div>
+      </div>
+          <div class="columns is-centered">
+        <div class="column">
+          <div class="content">
+            <h2 class="title is-3"> Example </h2>
+            <p>
+The paper presents a complete example to demonstrate VEGA’s workflow: automatically generating the getRelocType function for the RISC-V target.
+It then abstracts a function template, identifying target-independent and target-dependent parts. 
+            </p>
+             <!-- Placeholder for VEGA Figure 8: Accuracy -->
+              <div class="has-text-centered">
+            <img src="./static/images/example1.jpg" alt="example-1">
+            </div>
+            <p>
+First, VEGA collects existing implementations of getRelocType from ARM and MIPS backends and aligns their code using GumTree.
+            </p>
+             <!-- Placeholder for VEGA Figure 9: Comparison -->
+             <img src="./static/images/example2.jpg" alt="example-2">
+             <p>
+Next, VEGA extracts feature vectors from these implementations, capturing semantic properties relevant to backend generation. 
+Using these feature vectors, it fine-tunes a pre-trained transformer model. 
+Finally, given only the RISC-V target description files, VEGA generates a new RISC-V-specific getRelocType function. 
+Throughout the process, it assigns confidence scores to each generated statement, helping developers quickly locate and fix uncertain parts.
+             </p>
+          </div>
+        </div>
+      </div>
+      <!-- Method -->
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Quick Start</h2>
+
+<div>
+  <strong>Hardware Dependencies:</strong><br/>
+  - 8 Nvidia Tesla V100 GPUs, each with 16 GB memory.<br/><br/>
+
+  <strong>Software Dependencies:</strong><br/>
+  - CUDA version: 11.7<br/>
+  - Python version: 3.8.1<br/>
+  - Conda: Any version that supports Python 3.8.1<br/><br/>
+
+  <strong>Dataset and Base Model</strong><br/>
+  ComBack: A Versatile Dataset for Enhancing Compiler Backend Development Efficiency<br/>
+  - Paper: <a href="https://neurips.cc/virtual/2024/poster/97455">https://neurips.cc/virtual/2024/poster/97455</a><br/>
+  - Dataset & Model <a href="https://huggingface.co/docz1105/ComBack_Models">https://huggingface.co/docz1105/ComBack_Models</a><br/>
+</div>
+<br/>
+
+            <p>Follow these steps to set up the environment and run a functionality test.</p>
+          <pre style="width: 100%; overflow: auto; background: none;">
+          <code class="bash" style="min-width: 100%; width: 0px; overflow: scroll; font-family: 'Cascadia Code', 'Menlo', 'Courier New', monospace;">
+# 1. Clone the repository
+git lfs clone https://huggingface.co/docz1105/VEGA_AE
+cd VEGA_AE
+
+# 2. Set up Conda environment
+# Option A: Use provided YAML file
+conda env create -f vega_ae.yml
+conda activate vega_ae
+
+# Option B: Create manually
+conda create -n vega_ae python=3.8.1
+conda activate vega_ae
+pip install -r requirements.txt
+
+# 3. Run Functionality Test (Generates one function for RI5CY)
+# Takes < 3 minutes on 8x V100 GPUs
+bash run_function_test.sh
+
+# Check the output (generated code vs ground truth)
+cat ./models/FT_Model/result.jsonl
+
+# 4. Run Full Code Generation (for RISC-V, RI5CY, xCORE)
+# Uses the provided fine-tuned model and test data
+bash run_test.sh
+# (Results will be in ./models/FT_Model/result.jsonl, overwriting previous results)
+
+# 5. (Optional) Fine-tune the model from scratch
+# Uses the original UniXcoder and training data
+bash run_fine_tuning.sh
+# (New model saved in ./models/New_FT_Model)
+            </code>
+          </pre>
+        </div>
+      </div>
+    </div>
+
+      <!-- <hr/> -->
+      <!-- <section class="section" id="BibTeX"> -->
+      <!-- <div class="columns is-centered"> -->
+        <div class="container content is-max-desktop">
+            <h2 class="title is-3"> BibTex </h2>
+              <pre>
+  <code class="nohighlight" style="background-color: transparent; color: black; font-family: monospace;">
+
+@inproceedings{zhong2025vega,
+  title={VEGA: Automatically Generating Compiler Backends Using a Pre-Trained Transformer Model},
+  author={Ming Zhong, Fang Lv, Lulin Wang, Lei Qiu, Yingying Wang, Ying Liu, Huimin Cui, Xiaobing Feng, Jingling Xue},
+  booktitle={2025 IEEE/ACM International Symposium on Code Generation and Optimization (CGO)},
+  year={2025}
+}
+
+</code>
+              </pre>
+      </div>
+      <!-- </section> -->
+  </section>
+
+  <!-- <hr/> -->
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              Website template based on <a href="https://nerfies.github.io">Nerfies</a>. Icons from <a href="https://fontawesome.com/">Font Awesome</a> and <a href="https://academicons.org/">Academicons</a>. Badges from <a href="https://shields.io/">Shields.io</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
